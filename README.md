@@ -62,17 +62,17 @@ if (state == ConditionalState.satisfied) {
 /// The conditions have been satisfied but the `keepRemind` was disabled
 ConditionalState.keepRemindDisabled
 
-/// This version is satisfied with `noRequestVersions` => Don\'t satisfied
-ConditionalStatenoRequestVersion
+/// This version is satisfied with `noRequestVersions` => Don't satisfied
+ConditionalState.noRequestVersion
 
 /// Don't satisfy with minCallThisFunction condition
-ConditionalStatedontSatisfyWithMinCalls(''),
+ConditionalState.dontSatisfyWithMinCalls
 
 /// Don't satisfy with minDays condition
-ConditionalStatedontSatisfyWithMinDays(''),
+ConditionalState.dontSatisfyWithMinDays
 
-/// Completed request review
-ConditionalStatesatisfied
+/// Satisfied with all conditions
+ConditionalState.satisfied
 ```
 
 </details>

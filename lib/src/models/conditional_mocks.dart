@@ -2,12 +2,13 @@ class ConditionalMock {
   /// Map of mocks
   static final Map<String, ConditionalMock?> _mocks = {};
 
-  /// Add mock
+  /// Set ConditionalMock
   static void setMock(String name, ConditionalMock? mock) {
     _mocks[name] = null;
     if (mock != null) _mocks[name] = mock;
   }
 
+  /// Get ConditionalMock
   static ConditionalMock? getMock(String name) => _mocks[name];
 
   /// Clear all mocks

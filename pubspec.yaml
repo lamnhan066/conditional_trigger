@@ -1,6 +1,6 @@
 name: conditional_trigger
 description: Make it easier for you to set the conditions (such as min days or min calls) for specific method or widget.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/vnniz/conditional_trigger
 
 environment:

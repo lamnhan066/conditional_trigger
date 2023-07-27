@@ -34,7 +34,7 @@ final List<String> remindedVersions;
 /// If false, it only requests for the first time the Case are satisfied.
 final bool keepRemind;
 
-/// Request with delayed duaration
+/// Set a delayed when the `ConditionalState.satisfied` is returned.
 final Duration? duration;
 
 /// Debug
@@ -43,8 +43,7 @@ final bool debugLog;
 
 </details>
 
-
-Use this method to check the Case:
+Use this method to check the conditions:
 
 ``` dart
 final state = await condition.check();
@@ -52,6 +51,12 @@ final state = await condition.check();
 if (state == ConditionalState.satisfied) {
     // Do something
 }
+```
+
+You can also get the state if you already ran `check()` somewhere else:
+
+``` dart
+final state = condition.lastState;
 ```
 
 <details>

@@ -2,12 +2,32 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:satisfied_version/satisfied_version.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'models/conditional_mocks.dart';
 import 'models/conditional_state.dart';
 
+part 'models/conditional_mocks.dart';
+
 class ConditionalTrigger {
+  /// Save the current state of the conditional trigger
+  static final Map<String, ConditionalState?> _states = {};
+
+  /// Set state
+  static void _setState(String name, ConditionalState state) {
+    _states[name] = state;
+  }
+
+  /// Get state
+  static ConditionalState? _getState(String name) {
+    return _states[name];
+  }
+
+  /// Remove the state
+  static void _removeState(String name) => _states.remove(name);
+
+  /// Clear all states
+  static void clearAllLastStates() => _states.clear();
+
   /// Clear all mocks
-  static void clearAllMocks() => ConditionalMock.clearAllMocks();
+  static void clearAllMocks() => ConditionalMock._clearAllMocks();
 
   /// Create the conditions that help you to control the conditions before doing something.
   const ConditionalTrigger(
@@ -42,15 +62,20 @@ class ConditionalTrigger {
   /// If false, it only requests for the first time the Case are satisfied.
   final bool keepRemind;
 
-  /// Request with delayed duaration
+  /// Set a delayed when the `ConditionalState.satisfied` is returned.
   final Duration? duration;
 
   /// Debug
   final bool debugLog;
 
+  /// You can use [lastState] to get the ConditionState if you already ran `check()` somewhere else.
+  ///
+  /// This value will be `null` if there is no ran `check()`.
+  ConditionalState? get lastState => _getState(name);
+
   /// Set mock values.
   void setMockInitialValues([ConditionalMock? mock]) {
-    ConditionalMock.setMock(name, mock);
+    ConditionalMock._setMock(name, mock);
   }
 
   /// Create a copy of Condition
@@ -77,9 +102,11 @@ class ConditionalTrigger {
     );
   }
 
-  /// This function will check whether the conditions is satisfied.
+  /// This function will check whether the conditions is satisfied and save the state.
+  ///
+  /// Use `checkOnce()` if you don't want to save the state for later use with `lastState`.
   Future<ConditionalState> check() async {
-    final mock = ConditionalMock.getMock(name);
+    final mock = ConditionalMock._getMock(name);
 
     ConditionalMock state;
     if (mock != null) {
@@ -162,9 +189,16 @@ class ConditionalTrigger {
     }
   }
 
+  /// [Optional] Free the memory if there is no longer used
+  void dispose() {
+    _removeState(name);
+    ConditionalMock._removeMock(name);
+  }
+
   /// Print the debug log
   ConditionalState? _print(Object log) {
     if (log is ConditionalState) {
+      _setState(name, log);
       if (debugLog) {
         // ignore: avoid_print
         print('[Condition Helper - $name] ${log.text}');

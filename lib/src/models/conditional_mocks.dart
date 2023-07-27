@@ -1,18 +1,23 @@
+part of '../conditional_trigger.dart';
+
 class ConditionalMock {
   /// Map of mocks
   static final Map<String, ConditionalMock?> _mocks = {};
 
   /// Set ConditionalMock
-  static void setMock(String name, ConditionalMock? mock) {
-    _mocks[name] = null;
+  static void _setMock(String name, ConditionalMock? mock) {
+    _mocks.remove(name);
     if (mock != null) _mocks[name] = mock;
   }
 
   /// Get ConditionalMock
-  static ConditionalMock? getMock(String name) => _mocks[name];
+  static ConditionalMock? _getMock(String name) => _mocks[name];
+
+  /// Remove mock
+  static void _removeMock(String name) => _mocks.remove(name);
 
   /// Clear all mocks
-  static void clearAllMocks() => _mocks.clear();
+  static void _clearAllMocks() => _mocks.clear();
 
   /// Current version of the app
   final String version;
@@ -54,6 +59,7 @@ class ConditionalMock {
   })  : firstDateTime = firstDateTime ?? DateTime.now(),
         nowDateTime = nowDateTime ?? DateTime.now();
 
+  /// Copy the ConditionalMock with specific changes
   ConditionalMock copyWith({
     String? version,
     String? localVersion,

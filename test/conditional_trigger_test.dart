@@ -84,6 +84,14 @@ void main() {
           .check();
       expect(returned, ConditionalState.satisfied);
     });
+
+    test('Test `lastState`', () async {
+      ConditionalTrigger.clearAllLastStates();
+      expect(instance.lastState, null);
+      await instance.check();
+      expect(instance.lastState, isNot(null));
+      expect(instance.lastState, isA<ConditionalState>());
+    });
   });
 
   test('Test inDays', () {

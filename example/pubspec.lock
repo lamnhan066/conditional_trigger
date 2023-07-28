@@ -47,7 +47,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -250,10 +250,10 @@ packages:
     dependency: transitive
     description:
       name: satisfied_version
-      sha256: "9fa93ef669721dfb81e932ddba9b0e5a709646d57d2849e34d2cd32ccb6b3306"
+      sha256: d538c2db18f7f3b674895f1a8b56564d16759317da60a3960e74d0277e50eda2
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0+2"
+    version: "0.2.0"
   shared_preferences:
     dependency: transitive
     description:
@@ -391,10 +391,10 @@ packages:
     dependency: transitive
     description:
       name: update_helper
-      sha256: dfc6f1c8d8b81ec7ce4dad9beb7086a3c9a8371e33a7957a213dbf836ea8f9c6
+      sha256: "521e517140243fcb4141c513b51795932887febf3ee50b2cec489c1db9d02da5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.0"
   url_launcher:
     dependency: transitive
     description:

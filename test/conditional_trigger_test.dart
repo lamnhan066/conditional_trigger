@@ -41,19 +41,27 @@ void main() {
       expect(returned, ConditionalState.noRequestVersion);
     });
 
-    test('ConditionState.dontSatisfyWithMinCallThisFunction', () async {
+    test('ConditionState.dontSatisfyWithMinCallsAndDays', () async {
       instance.setMockInitialValues(
         ConditionalMock(calls: 0, firstDateTime: DateTime(0)),
       );
-      final returned = await instance.copyWith(minCalls: 2).check();
+      final returned = await instance.copyWith(minCalls: 2, minDays: 2).check();
+      expect(returned, ConditionalState.dontSatisfyWithMinCalls);
+    });
+
+    test('ConditionState.dontSatisfyWithMinCalls', () async {
+      instance.setMockInitialValues(
+        ConditionalMock(calls: 0, firstDateTime: DateTime.now()),
+      );
+      final returned = await instance.copyWith(minCalls: 2, minDays: 0).check();
       expect(returned, ConditionalState.dontSatisfyWithMinCalls);
     });
 
     test('ConditionState.dontSatisfyWithMinDays', () async {
       instance.setMockInitialValues(
-        ConditionalMock(calls: 5, firstDateTime: DateTime.now()),
+        ConditionalMock(calls: 0, firstDateTime: DateTime.now()),
       );
-      final returned = await instance.copyWith(minDays: 2, minCalls: 3).check();
+      final returned = await instance.copyWith(minDays: 3, minCalls: 0).check();
       expect(returned, ConditionalState.dontSatisfyWithMinDays);
     });
 

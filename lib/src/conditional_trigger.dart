@@ -181,6 +181,10 @@ class ConditionalTrigger {
 
       return _print(ConditionalState.satisfied)!;
     } else {
+      if (state.calls < minCalls && days < minDays) {
+        return _print(ConditionalState.dontSatisfyWithMinCallsAndDays)!;
+      }
+
       if (state.calls < minCalls) {
         return _print(ConditionalState.dontSatisfyWithMinCalls)!;
       }

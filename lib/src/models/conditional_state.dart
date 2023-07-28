@@ -8,11 +8,14 @@ enum ConditionalState {
   noRequestVersion(
       'This version is satisfied with `noRequestVersions` => Don\'t satisfied'),
 
-  /// Don't satisfy with minCallThisFunction condition
-  dontSatisfyWithMinCalls('Don\'t satisfy with minCallThisFunction condition'),
+  /// Don't satisfy with minCalls condition
+  dontSatisfyWithMinCalls('Don\'t satisfy with minCalls condition'),
 
   /// Don't satisfy with minDays condition
   dontSatisfyWithMinDays('Don\'t satisfy with minDays condition'),
+
+  /// Don't satisfy with minCalls and minDays
+  dontSatisfyWithMinCallsAndDays("Don't satisfy with minCalls and minDays"),
 
   /// Satisfied with all conditions
   satisfied('Satisfied with all conditions');

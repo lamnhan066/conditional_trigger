@@ -1,3 +1,8 @@
+## 0.0.5
+
+* Add `ConditionalState.dontSatisfyWithMinCallsAndDays`.
+* Remove `duration` parameter.
+
 ## 0.0.4
 
 * Bump dependencies

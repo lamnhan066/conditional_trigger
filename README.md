@@ -34,9 +34,6 @@ final List<String> remindedVersions;
 /// If false, it only requests for the first time the Case are satisfied.
 final bool keepRemind;
 
-/// Set a delayed when the `ConditionalState.satisfied` is returned.
-final Duration? duration;
-
 /// Debug
 final bool debugLog;
 ```
@@ -70,7 +67,10 @@ ConditionalState.keepRemindDisabled
 /// This version is satisfied with `noRequestVersions` => Don't satisfied
 ConditionalState.noRequestVersion
 
-/// Don't satisfy with minCallThisFunction condition
+/// Don't satisfy with minCalls and minDays
+ConditionalState.dontSatisfyWithMinCallsAndDays
+
+/// Don't satisfy with minCalls condition
 ConditionalState.dontSatisfyWithMinCalls
 
 /// Don't satisfy with minDays condition

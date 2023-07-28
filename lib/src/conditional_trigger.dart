@@ -37,7 +37,6 @@ class ConditionalTrigger {
     this.noRequestVersions = const [],
     this.remindedVersions = const [],
     this.keepRemind = false,
-    this.duration,
     this.debugLog = false,
   });
 
@@ -62,9 +61,6 @@ class ConditionalTrigger {
   /// If false, it only requests for the first time the Case are satisfied.
   final bool keepRemind;
 
-  /// Set a delayed when the `ConditionalState.satisfied` is returned.
-  final Duration? duration;
-
   /// Debug
   final bool debugLog;
 
@@ -87,7 +83,6 @@ class ConditionalTrigger {
     List<String>? noRequestVersions,
     List<String>? remindedVersions,
     bool? keepRemind,
-    Duration? duration,
     bool? debugLog,
   }) {
     return ConditionalTrigger(
@@ -97,7 +92,6 @@ class ConditionalTrigger {
       noRequestVersions: noRequestVersions ?? this.noRequestVersions,
       remindedVersions: remindedVersions ?? this.remindedVersions,
       keepRemind: keepRemind ?? this.keepRemind,
-      duration: duration ?? this.duration,
       debugLog: debugLog ?? this.debugLog,
     );
   }
@@ -176,8 +170,6 @@ class ConditionalTrigger {
     // Compare
     if (state.calls >= minCalls && days >= minDays) {
       _print('Satisfy with all conditions');
-
-      if (duration != null) await Future.delayed(duration!);
 
       return _print(ConditionalState.satisfied)!;
     } else {

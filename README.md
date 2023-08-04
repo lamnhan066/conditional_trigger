@@ -5,7 +5,11 @@ This plugin will make it easier for you to set the conditions for specific metho
 ## Usage
 
 ``` dart
-final condition = ConditionalTrigger('SurveyBanner');
+final condition = ConditionalTrigger(
+        'SurveyBanner',
+        minDays: 3,
+        minCalls: 3,
+    );
 ```
 
 <details>

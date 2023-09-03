@@ -6,7 +6,7 @@ class ConditionalMock {
 
   /// Set ConditionalMock
   static void _setMock(String name, ConditionalMock? mock) {
-    _mocks.remove(name);
+    _removeMock(name);
     if (mock != null) _mocks[name] = mock;
   }
 
@@ -76,4 +76,31 @@ class ConditionalMock {
         nowDateTime: nowDateTime ?? this.nowDateTime,
         calls: calls ?? this.calls,
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'version': version,
+      'localVersion': localVersion,
+      'isRequested': isRequested,
+      'firstDateTime': firstDateTime.millisecondsSinceEpoch,
+      'nowDateTime': nowDateTime.millisecondsSinceEpoch,
+      'calls': calls,
+    };
+  }
+
+  factory ConditionalMock.fromMap(Map<String, dynamic> map) {
+    return ConditionalMock(
+      version: map['version'] ?? '',
+      localVersion: map['localVersion'] ?? '',
+      isRequested: map['isRequested'] ?? false,
+      firstDateTime: DateTime.fromMillisecondsSinceEpoch(map['firstDateTime']),
+      nowDateTime: DateTime.fromMillisecondsSinceEpoch(map['nowDateTime']),
+      calls: map['calls']?.toInt() ?? 0,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ConditionalMock.fromJson(String source) =>
+      ConditionalMock.fromMap(json.decode(source));
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:satisfied_version/satisfied_version.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +71,9 @@ class ConditionalTrigger {
   /// This value will be `null` if there is no ran `check()`.
   ConditionalState? get lastState => _getState(name);
 
+  /// Key of the ConditionalState for SharedPreferences
+  String get _stateKey => 'ConditionalTrigger.State.$name';
+
   /// Set mock values.
   void setMockInitialValues([ConditionalMock? mock]) {
     ConditionalMock._setMock(name, mock);
@@ -96,9 +101,24 @@ class ConditionalTrigger {
     );
   }
 
-  /// This function will check whether the conditions is satisfied and save the state.
+  /// This function will check whether the conditions are satisfied, the conditions
+  /// will be check only one time even multiple `checkOnce` is called. Main different is
+  /// this method will NOT insrease the `calls` counter.
   ///
-  /// Use `checkOnce()` if you don't want to save the state for later use with `lastState`.
+  /// Use `check()` if you want to repeat to check the conditions everytime it is
+  /// called.
+  Future<ConditionalState> checkOnce() async {
+    if (lastState != null) return lastState!;
+
+    return check();
+  }
+
+  /// This method will check whether the conditions are satisfied, the conditions
+  /// will be repeated to check everytime this method is called. Main different is
+  /// this method will insrease the `calls` counter.
+  ///
+  /// Use `checkOnce()` if you want to check the conditions only one time, the `lastState`
+  /// will be returned if it has been checked.
   Future<ConditionalState> check() async {
     final mock = ConditionalMock._getMock(name);
 
@@ -107,16 +127,42 @@ class ConditionalTrigger {
       state = mock;
     } else {
       final prefs = await SharedPreferences.getInstance();
-      final firstDateTimeString = prefs.getString('$name.FirstDateTime') ?? '';
+      final stateJson = prefs.getString(_stateKey);
 
-      state = ConditionalMock(
-        version: (await PackageInfo.fromPlatform()).version,
-        localVersion: prefs.getString('$name.Version') ?? '0.0.0',
-        isRequested: prefs.getBool('$name.Requested') ?? false,
-        firstDateTime: DateTime.tryParse(firstDateTimeString),
-        nowDateTime: DateTime.now(),
-        calls: prefs.getInt('$name.CallThisFunction') ?? 0,
-      );
+      /// Check if there is a saved state for the current `ConditionalTrigger`
+      if (stateJson != null) {
+        /// Get the data saved from Pref
+        state = ConditionalMock.fromJson(stateJson);
+
+        /// Update the new data
+        state = state.copyWith(
+          version: (await PackageInfo.fromPlatform()).version,
+          nowDateTime: DateTime.now(),
+        );
+      } else {
+        /// Get the saved data for older version.
+        final firstDateTimeString =
+            prefs.getString('$name.FirstDateTime') ?? '';
+        if (firstDateTimeString != '') {
+          /// TODO: Remove this method when releasing to stable
+          state = ConditionalMock(
+            version: (await PackageInfo.fromPlatform()).version,
+            localVersion: prefs.getString('$name.Version') ?? '0.0.0',
+            isRequested: prefs.getBool('$name.Requested') ?? false,
+            firstDateTime: DateTime.tryParse(firstDateTimeString),
+            nowDateTime: DateTime.now(),
+            calls: prefs.getInt('$name.CallThisFunction') ?? 0,
+          );
+        } else {
+          /// For newer version
+          state = ConditionalMock(
+            version: (await PackageInfo.fromPlatform()).version,
+            isRequested: false,
+            nowDateTime: DateTime.now(),
+            calls: 0,
+          );
+        }
+      }
     }
 
     // Compare version
@@ -149,16 +195,12 @@ class ConditionalTrigger {
     // Save data back to prefs
     if (mock != null) {
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('$name.Version', state.version);
-      prefs.setInt('$name.CallThisFunction', state.calls);
-      prefs.setString(
-        '$name.FirstDateTime',
-        state.nowDateTime.toIso8601String(),
-      );
 
       if (state.calls >= minCalls && days >= minDays) {
-        prefs.setBool('$name.Requested', true);
+        state = state.copyWith(isRequested: true);
       }
+
+      prefs.setString(_stateKey, state.toJson());
     }
 
     // Print debug
@@ -197,13 +239,13 @@ class ConditionalTrigger {
       _setState(name, log);
       if (debugLog) {
         // ignore: avoid_print
-        print('[Condition Helper - $name] ${log.text}');
+        print('[ConditionalTrigger-$name] ${log.text}');
       }
       return log;
     }
     if (debugLog) {
       // ignore: avoid_print
-      print('[Condition Helper - $name] $log');
+      print('[ConditionalTrigger-$name] $log');
     }
     return null;
   }

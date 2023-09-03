@@ -1,3 +1,8 @@
+## 0.0.7
+
+* Added `checkOnce` method.
+* Changed the prefix of logs to `ConditionalTrigger`.
+
 ## 0.0.6
 
 * Update README.

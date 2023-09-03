@@ -54,10 +54,20 @@ if (state == ConditionalState.satisfied) {
 }
 ```
 
-You can also get the state if you already ran `check()` somewhere else:
+You can get the state if you already ran `check()` somewhere else:
 
 ``` dart
 final state = condition.lastState;
+```
+
+This method will automatically return the `conditions.lastState` when it is set, so you can call it multiple times:
+
+``` dart
+final stateOnce = await condition.checkOnce();
+
+if (state == ConditionalState.satisfied) {
+    // Do something
+}
 ```
 
 <details>

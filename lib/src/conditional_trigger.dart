@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:satisfied_version/satisfied_version.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,6 +71,9 @@ class ConditionalTrigger {
   ///
   /// This value will be `null` if there is no ran `check()`.
   ConditionalState? get lastState => _getState(name);
+
+  @visibleForTesting
+  String get stateKey => _stateKey;
 
   /// Key of the ConditionalState for SharedPreferences
   String get _stateKey => 'ConditionalTrigger.State.$name';

@@ -5,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  const instance = ConditionalTrigger('ConditionHelper');
+  const name = 'ConditionHelper';
+  const instance = ConditionalTrigger(name, debugLog: true);
   setUpAll(() {
     SharedPreferences.setMockInitialValues({});
     PackageInfo.setMockInitialValues(
@@ -15,6 +16,12 @@ void main() {
       buildNumber: '',
       buildSignature: '',
     );
+  });
+  tearDownAll(() {
+    SharedPreferences.setMockInitialValues({});
+    ConditionalTrigger.clearAllLastStates();
+    ConditionalTrigger.clearAllMocks();
+    instance.dispose();
   });
   group('Call initial', () {
     test('ConditionState.keepRemindDisabled', () async {
@@ -82,23 +89,102 @@ void main() {
       expect(returned, ConditionalState.satisfied);
     });
 
-    test('Test with `ReviewMode.checkOnly`', () async {
-      final returned = await instance
-          .copyWith(
-            minCalls: 0,
-            minDays: 0,
-            debugLog: false,
-          )
-          .check();
-      expect(returned, ConditionalState.satisfied);
-    });
-
     test('Test `lastState`', () async {
       ConditionalTrigger.clearAllLastStates();
       expect(instance.lastState, null);
       await instance.check();
       expect(instance.lastState, isNot(null));
       expect(instance.lastState, isA<ConditionalState>());
+    });
+
+    /// Check will repeat checking when it's called
+    test('Test `check`', () async {
+      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllMocks();
+      final first = DateTime.now().subtract(const Duration(days: 4));
+      SharedPreferences.setMockInitialValues({
+        instance.stateKey: ConditionalMock(
+          localVersion: '',
+          firstDateTime: first,
+          calls: 1,
+        ).toJson(),
+      });
+      final state1 = await instance.check();
+      expect(state1, ConditionalState.dontSatisfyWithMinCalls);
+
+      // Increase `calls` 1 after calling `check`
+      SharedPreferences.setMockInitialValues({
+        instance.stateKey: ConditionalMock(
+          localVersion: '',
+          firstDateTime: first,
+          calls: 2,
+        ).toJson(),
+      });
+      final state2 = await instance.check();
+      expect(state2, ConditionalState.satisfied);
+    });
+
+    /// `checkOnce` will keep the first value
+    test('Test `checkOnce`', () async {
+      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllMocks();
+      final first = DateTime.now().subtract(const Duration(days: 4));
+      SharedPreferences.setMockInitialValues({
+        instance.stateKey: ConditionalMock(
+          localVersion: '',
+          firstDateTime: first,
+          calls: 1,
+        ).toJson(),
+      });
+      final state1 = await instance.checkOnce();
+      expect(state1, ConditionalState.dontSatisfyWithMinCalls);
+
+      // Increase `calls` 1 after calling `check`
+      SharedPreferences.setMockInitialValues({
+        instance.stateKey: ConditionalMock(
+          localVersion: '',
+          firstDateTime: first,
+          calls: 2,
+        ).toJson(),
+      });
+      final state2 = await instance.checkOnce();
+      expect(state2, ConditionalState.dontSatisfyWithMinCalls);
+    });
+
+    // TODO: Adapt with the deprecated version, remove when releasing to stable
+    test(
+        'Test with Mock == null and $name.FirstDateTime from SharedPref is not empty',
+        () async {
+      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllMocks();
+      final first = DateTime.now().subtract(const Duration(days: 4));
+      SharedPreferences.setMockInitialValues({
+        '$name.Version': '',
+        '$name.FirstDateTime': first.toIso8601String(),
+        '$name.CallThisFunction': 1,
+      });
+      final state1 = await instance.check();
+      expect(state1, ConditionalState.dontSatisfyWithMinCalls);
+
+      SharedPreferences.setMockInitialValues({
+        '$name.Version': '',
+        '$name.FirstDateTime': first.toIso8601String(),
+        '$name.CallThisFunction': 2,
+      });
+      final state2 = await instance.check();
+      expect(state2, ConditionalState.satisfied);
+    });
+
+    test(
+        'Test with Mock == null and $name.FirstDateTime from SharedPref is empty',
+        () async {
+      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllMocks();
+      SharedPreferences.setMockInitialValues({});
+      final state = await instance.check();
+      print(
+          (await SharedPreferences.getInstance()).getString(instance.stateKey));
+      expect(state, ConditionalState.dontSatisfyWithMinCallsAndDays);
     });
   });
 

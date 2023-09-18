@@ -1,3 +1,7 @@
+## 0.1.0
+
+* Bump dependencies.
+
 ## 0.0.7
 
 * Added `checkOnce` method.

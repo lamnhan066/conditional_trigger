@@ -1,31 +1,31 @@
 part of '../conditional_trigger.dart';
 
 class ConditionalMock {
-  /// Map of mocks
+  /// Map of mocks.
   static final Map<String, ConditionalMock?> _mocks = {};
 
-  /// Set ConditionalMock
+  /// Set ConditionalMock.
   static void _setMock(String name, ConditionalMock? mock) {
     _removeMock(name);
     if (mock != null) _mocks[name] = mock;
   }
 
-  /// Get ConditionalMock
+  /// Get ConditionalMock.
   static ConditionalMock? _getMock(String name) => _mocks[name];
 
-  /// Remove mock
+  /// Remove mock.
   static void _removeMock(String name) => _mocks.remove(name);
 
-  /// Clear all mocks
+  /// Clear all mocks.
   static void _clearAllMocks() => _mocks.clear();
 
-  /// Current version of the app
+  /// Current version of the app.
   final String version;
 
-  /// Version that is in shared preferences
+  /// Version that is in shared preferences.
   final String localVersion;
 
-  /// Mark as requested
+  /// Mark as requested/
   final bool isRequested;
 
   /// Mock value for the first time the app opened.
@@ -37,15 +37,15 @@ class ConditionalMock {
   /// Mock value from preferences.
   final int calls;
 
-  /// Set mock values for testing
+  /// Set mock values for testing.
   ConditionalMock({
-    /// Current version of the app
+    /// Current version of the app.
     this.version = '0.0.0',
 
-    /// Version of the app in shared preferences
+    /// Version of the app in shared preferences.
     this.localVersion = '0.0.0',
 
-    /// Mark as requested
+    /// Mark as requested.
     this.isRequested = false,
 
     /// Mock value for the first time the app is opened.
@@ -59,7 +59,7 @@ class ConditionalMock {
   })  : firstDateTime = firstDateTime ?? DateTime.now(),
         nowDateTime = nowDateTime ?? DateTime.now();
 
-  /// Copy the ConditionalMock with specific changes
+  /// Copy the ConditionalMock with specific changes.
   ConditionalMock copyWith({
     String? version,
     String? localVersion,

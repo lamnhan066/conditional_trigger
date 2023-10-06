@@ -182,8 +182,7 @@ void main() {
       ConditionalTrigger.clearAllMocks();
       SharedPreferences.setMockInitialValues({});
       final state = await instance.check();
-      print(
-          (await SharedPreferences.getInstance()).getString(instance.stateKey));
+
       expect(state, ConditionalState.dontSatisfyWithMinCallsAndDays);
     });
   });

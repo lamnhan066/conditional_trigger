@@ -1,3 +1,9 @@
+## 0.1.1
+
+* Update dependencies.
+* Update comment.
+* Update homepage URL.
+
 ## 0.1.0
 
 * Bump dependencies.

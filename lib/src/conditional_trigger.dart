@@ -10,26 +10,26 @@ import 'models/conditional_state.dart';
 part 'models/conditional_mocks.dart';
 
 class ConditionalTrigger {
-  /// Save the current state of the conditional trigger
+  /// Save the current state of the conditional trigger.
   static final Map<String, ConditionalState?> _states = {};
 
-  /// Set state
+  /// Set state.
   static void _setState(String name, ConditionalState state) {
     _states[name] = state;
   }
 
-  /// Get state
+  /// Get state.
   static ConditionalState? _getState(String name) {
     return _states[name];
   }
 
-  /// Remove the state
+  /// Remove a state.
   static void _removeState(String name) => _states.remove(name);
 
-  /// Clear all states
+  /// Clear all states.
   static void clearAllLastStates() => _states.clear();
 
-  /// Clear all mocks
+  /// Clear all mocks.
   static void clearAllMocks() => ConditionalMock._clearAllMocks();
 
   /// Create the conditions that help you to control the conditions before doing something.
@@ -46,11 +46,11 @@ class ConditionalTrigger {
   /// Name of this contidion. This is also known as prefix of the SharedPreferences.
   final String name;
 
-  /// Min days since this method is called
+  /// Min days since this method is called.
   final int minDays;
 
   /// Min calls of this method (increase counter when this method is executed)
-  /// If you add this line in your main(), it's same as app opening count
+  /// If you add this line in your main(), it's same as app opening count.
   final int minCalls;
 
   /// If the current version is satisfied with this than not showing the request
@@ -64,7 +64,7 @@ class ConditionalTrigger {
   /// If false, it only requests for the first time the Case are satisfied.
   final bool keepRemind;
 
-  /// Debug
+  /// Print the debug log if this value is `true`.
   final bool debugLog;
 
   /// You can use [lastState] to get the ConditionState if you already ran `check()` somewhere else.
@@ -75,7 +75,7 @@ class ConditionalTrigger {
   @visibleForTesting
   String get stateKey => _stateKey;
 
-  /// Key of the ConditionalState for SharedPreferences
+  /// Key of the ConditionalState for SharedPreferences.
   String get _stateKey => 'ConditionalTrigger.State.$name';
 
   /// Set mock values.
@@ -83,7 +83,7 @@ class ConditionalTrigger {
     ConditionalMock._setMock(name, mock);
   }
 
-  /// Create a copy of Condition
+  /// Create a copy of Condition.
   ConditionalTrigger copyWith({
     String? name,
     String? version,
@@ -133,22 +133,22 @@ class ConditionalTrigger {
       final prefs = await SharedPreferences.getInstance();
       final stateJson = prefs.getString(_stateKey);
 
-      /// Check if there is a saved state for the current `ConditionalTrigger`
+      // Check if there is a saved state for the current `ConditionalTrigger`.
       if (stateJson != null) {
-        /// Get the data saved from Pref
+        // Get the data saved from Pref.
         state = ConditionalMock.fromJson(stateJson);
 
-        /// Update the new data
+        // Update the new data.
         state = state.copyWith(
           version: (await PackageInfo.fromPlatform()).version,
           nowDateTime: DateTime.now(),
         );
       } else {
-        /// Get the saved data for older version.
+        // Get the saved data for older version.
         final firstDateTimeString =
             prefs.getString('$name.FirstDateTime') ?? '';
         if (firstDateTimeString != '') {
-          /// TODO: Remove this method when releasing to stable
+          // TODO: Remove this method when releasing to stable.
           state = ConditionalMock(
             version: (await PackageInfo.fromPlatform()).version,
             localVersion: prefs.getString('$name.Version') ?? '0.0.0',
@@ -158,7 +158,7 @@ class ConditionalTrigger {
             calls: prefs.getInt('$name.CallThisFunction') ?? 0,
           );
         } else {
-          /// For newer version
+          // For newer version.
           state = ConditionalMock(
             version: (await PackageInfo.fromPlatform()).version,
             isRequested: false,
@@ -169,7 +169,7 @@ class ConditionalTrigger {
       }
     }
 
-    // Compare version
+    // Compare version.
     if (state.isRequested) {
       final getKeepRemind =
           keepRemind || state.version.satisfiedWith(remindedVersions);
@@ -178,12 +178,12 @@ class ConditionalTrigger {
       }
     }
 
-    // Compare with noRequestVersions
+    // Compare with noRequestVersions.
     if (state.version.satisfiedWith(noRequestVersions)) {
       return _print(ConditionalState.noRequestVersion)!;
     }
 
-    // Reset variables
+    // Reset variables.
     if (state.localVersion != state.version) {
       state = state.copyWith(
         calls: 0,
@@ -192,11 +192,11 @@ class ConditionalTrigger {
       );
     }
 
-    // Increase data
+    // Increase call counter.
     state = state.copyWith(calls: state.calls + 1);
     int days = state.nowDateTime.difference(state.firstDateTime).inDays;
 
-    // Save data back to prefs
+    // Save data back to prefs.
     if (mock != null) {
       final prefs = await SharedPreferences.getInstance();
 
@@ -207,13 +207,13 @@ class ConditionalTrigger {
       prefs.setString(_stateKey, state.toJson());
     }
 
-    // Print debug
+    // Print debug.
     _print(
         'prefs version: ${state.localVersion}, currentVersion: ${state.version}');
     _print('Call this function ${state.calls} times');
     _print('First time open this app was $days days before');
 
-    // Compare
+    // Compare values.
     if (state.calls >= minCalls && days >= minDays) {
       _print('Satisfy with all conditions');
 
@@ -231,13 +231,13 @@ class ConditionalTrigger {
     }
   }
 
-  /// [Optional] Free the memory if there is no longer used
+  /// [Optional] Free the memory if there is no longer used.
   void dispose() {
     _removeState(name);
     ConditionalMock._removeMock(name);
   }
 
-  /// Print the debug log
+  /// Print the debug log.
   ConditionalState? _print(Object log) {
     if (log is ConditionalState) {
       _setState(name, log);

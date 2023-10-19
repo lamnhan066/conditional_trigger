@@ -1,6 +1,6 @@
 name: conditional_trigger
 description: Make it easier for you to set the conditions (such as min days or min calls) for specific method or widget.
-version: 0.2.0
+version: 0.2.1
 homepage: https://github.com/lamnhan066/conditional_trigger
 
 environment:
@@ -10,15 +10,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  package_info_plus: ^5.0.0
+  package_info_plus: ^4.2.0
   satisfied_version: ^0.4.1
-  shared_preferences: ^2.2.1
-  update_helper: ^0.6.0
+  shared_preferences: ^2.2.2
+  update_helper: ^0.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.3
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

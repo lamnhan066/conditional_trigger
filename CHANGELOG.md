@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Bump dependencies.
+
 ## 0.2.1
 
 * Change `package_info_plus version` to `^4.2.0`.

@@ -19,12 +19,12 @@ void main() {
   });
   tearDownAll(() {
     SharedPreferences.setMockInitialValues({});
-    ConditionalTrigger.clearAllLastStates();
+    ConditionalTrigger.clearAllStates();
     ConditionalTrigger.clearAllMocks();
     instance.dispose();
   });
   group('Call initial', () {
-    test('ConditionState.keepRemindDisabled', () async {
+    test('ConditionalState.keepRemindDisabled', () async {
       instance.setMockInitialValues(
         ConditionalMock(version: '1.0.0', isRequested: true),
       );
@@ -39,7 +39,7 @@ void main() {
       expect(returned3, isNot(ConditionalState.keepRemindDisabled));
     });
 
-    test('ConditionState.noRequestVersion', () async {
+    test('ConditionalState.noRequestVersion', () async {
       instance.setMockInitialValues(
         ConditionalMock(version: '1.0.0'),
       );
@@ -48,31 +48,31 @@ void main() {
       expect(returned, ConditionalState.noRequestVersion);
     });
 
-    test('ConditionState.dontSatisfyWithMinCallsAndDays', () async {
+    test('ConditionalState.notSatisfiedWithMinCallsAndDays', () async {
       instance.setMockInitialValues(
         ConditionalMock(calls: 0, firstDateTime: DateTime(0)),
       );
       final returned = await instance.copyWith(minCalls: 2, minDays: 2).check();
-      expect(returned, ConditionalState.dontSatisfyWithMinCalls);
+      expect(returned, ConditionalState.notSatisfiedWithMinCalls);
     });
 
-    test('ConditionState.dontSatisfyWithMinCalls', () async {
+    test('ConditionalState.notSatisfiedWithMinCalls', () async {
       instance.setMockInitialValues(
         ConditionalMock(calls: 0, firstDateTime: DateTime.now()),
       );
       final returned = await instance.copyWith(minCalls: 2, minDays: 0).check();
-      expect(returned, ConditionalState.dontSatisfyWithMinCalls);
+      expect(returned, ConditionalState.notSatisfiedWithMinCalls);
     });
 
-    test('ConditionState.dontSatisfyWithMinDays', () async {
+    test('ConditionalState.notSatisfiedWithMinDays', () async {
       instance.setMockInitialValues(
         ConditionalMock(calls: 0, firstDateTime: DateTime.now()),
       );
       final returned = await instance.copyWith(minDays: 3, minCalls: 0).check();
-      expect(returned, ConditionalState.dontSatisfyWithMinDays);
+      expect(returned, ConditionalState.notSatisfiedWithMinDays);
     });
 
-    test('ConditionState.completed', () async {
+    test('ConditionalState.completed', () async {
       instance.setMockInitialValues(
         ConditionalMock(
           calls: 5,
@@ -90,7 +90,7 @@ void main() {
     });
 
     test('Test `lastState`', () async {
-      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllStates();
       expect(instance.lastState, null);
       await instance.check();
       expect(instance.lastState, isNot(null));
@@ -99,7 +99,7 @@ void main() {
 
     /// Check will repeat checking when it's called
     test('Test `check`', () async {
-      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllStates();
       ConditionalTrigger.clearAllMocks();
       final first = DateTime.now().subtract(const Duration(days: 4));
       SharedPreferences.setMockInitialValues({
@@ -110,7 +110,7 @@ void main() {
         ).toJson(),
       });
       final state1 = await instance.check();
-      expect(state1, ConditionalState.dontSatisfyWithMinCalls);
+      expect(state1, ConditionalState.notSatisfiedWithMinCalls);
 
       // Increase `calls` 1 after calling `check`
       SharedPreferences.setMockInitialValues({
@@ -126,7 +126,7 @@ void main() {
 
     /// `checkOnce` will keep the first value
     test('Test `checkOnce`', () async {
-      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllStates();
       ConditionalTrigger.clearAllMocks();
       final first = DateTime.now().subtract(const Duration(days: 4));
       SharedPreferences.setMockInitialValues({
@@ -137,7 +137,7 @@ void main() {
         ).toJson(),
       });
       final state1 = await instance.checkOnce();
-      expect(state1, ConditionalState.dontSatisfyWithMinCalls);
+      expect(state1, ConditionalState.notSatisfiedWithMinCalls);
 
       // Increase `calls` 1 after calling `check`
       SharedPreferences.setMockInitialValues({
@@ -148,14 +148,14 @@ void main() {
         ).toJson(),
       });
       final state2 = await instance.checkOnce();
-      expect(state2, ConditionalState.dontSatisfyWithMinCalls);
+      expect(state2, ConditionalState.notSatisfiedWithMinCalls);
     });
 
     // TODO: Adapt with the deprecated version, remove when releasing to stable
     test(
         'Test with Mock == null and $name.FirstDateTime from SharedPref is not empty',
         () async {
-      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllStates();
       ConditionalTrigger.clearAllMocks();
       final first = DateTime.now().subtract(const Duration(days: 4));
       SharedPreferences.setMockInitialValues({
@@ -164,7 +164,7 @@ void main() {
         '$name.CallThisFunction': 1,
       });
       final state1 = await instance.check();
-      expect(state1, ConditionalState.dontSatisfyWithMinCalls);
+      expect(state1, ConditionalState.notSatisfiedWithMinCalls);
 
       SharedPreferences.setMockInitialValues({
         '$name.Version': '',
@@ -178,12 +178,12 @@ void main() {
     test(
         'Test with Mock == null and $name.FirstDateTime from SharedPref is empty',
         () async {
-      ConditionalTrigger.clearAllLastStates();
+      ConditionalTrigger.clearAllStates();
       ConditionalTrigger.clearAllMocks();
       SharedPreferences.setMockInitialValues({});
       final state = await instance.check();
 
-      expect(state, ConditionalState.dontSatisfyWithMinCallsAndDays);
+      expect(state, ConditionalState.notSatisfiedWithMinCallsAndDays);
     });
   });
 

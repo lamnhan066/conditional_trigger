@@ -27,7 +27,11 @@ class ConditionalTrigger {
   static void _removeState(String name) => _states.remove(name);
 
   /// Clear all states.
-  static void clearAllLastStates() => _states.clear();
+  static void clearAllStates() => _states.clear();
+
+  /// Clear all states.
+  @Deprecated('Use `clearAllStates` instead.')
+  static void clearAllLastStates() => clearAllStates();
 
   /// Clear all mocks.
   static void clearAllMocks() => ConditionalMock._clearAllMocks();
@@ -60,14 +64,15 @@ class ConditionalTrigger {
   /// List of version that allow the app to remind the in-app review.
   final List<String> remindedVersions;
 
-  /// If true, it'll keep asking for the Case on each new version (and satisfy with all the above Case).
-  /// If false, it only requests for the first time the Case are satisfied.
+  /// If true, it'll keep asking for the ConditionalTrigger on each new version
+  /// (and satisfied with all the above ConditionalTrigger). If false, it only requests
+  /// for the first time the ConditionalTrigger are satisfied.
   final bool keepRemind;
 
   /// Print the debug log if this value is `true`.
   final bool debugLog;
 
-  /// You can use [lastState] to get the ConditionState if you already ran `check()` somewhere else.
+  /// You can use [lastState] to get the [ConditionalState] if you already ran `check()` somewhere else.
   ///
   /// This value will be `null` if there is no ran `check()`.
   ConditionalState? get lastState => _getState(name);
@@ -220,14 +225,14 @@ class ConditionalTrigger {
       return _print(ConditionalState.satisfied)!;
     } else {
       if (state.calls < minCalls && days < minDays) {
-        return _print(ConditionalState.dontSatisfyWithMinCallsAndDays)!;
+        return _print(ConditionalState.notSatisfiedWithMinCallsAndDays)!;
       }
 
       if (state.calls < minCalls) {
-        return _print(ConditionalState.dontSatisfyWithMinCalls)!;
+        return _print(ConditionalState.notSatisfiedWithMinCalls)!;
       }
 
-      return _print(ConditionalState.dontSatisfyWithMinDays)!;
+      return _print(ConditionalState.notSatisfiedWithMinDays)!;
     }
   }
 

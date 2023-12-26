@@ -34,8 +34,9 @@ final List<String> noRequestVersions;
 /// List of version that allow the app to remind the in-app review.
 final List<String> remindedVersions;
 
-/// If true, it'll keep asking for the Case on each new version (and satisfy with all the above Case).
-/// If false, it only requests for the first time the Case are satisfied.
+/// If true, it'll keep asking for the ConditionalTrigger on each new version
+/// (and satisfied with all the above ConditionalTrigger). If false, it only requests
+/// for the first time the ConditionalTrigger are satisfied.
 final bool keepRemind;
 
 /// Debug
@@ -82,13 +83,13 @@ ConditionalState.keepRemindDisabled
 ConditionalState.noRequestVersion
 
 /// Don't satisfy with minCalls and minDays
-ConditionalState.dontSatisfyWithMinCallsAndDays
+ConditionalState.notSatisfiedWithMinCallsAndDays
 
 /// Don't satisfy with minCalls condition
-ConditionalState.dontSatisfyWithMinCalls
+ConditionalState.notSatisfiedWithMinCalls
 
 /// Don't satisfy with minDays condition
-ConditionalState.dontSatisfyWithMinDays
+ConditionalState.notSatisfiedWithMinDays
 
 /// Satisfied with all conditions
 ConditionalState.satisfied

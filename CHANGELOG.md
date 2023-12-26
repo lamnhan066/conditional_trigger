@@ -1,3 +1,10 @@
+## 0.3.1
+
+* Marks `ConditionalTrigger.clearAllLastStates()` as deprecated with `ConditionalTrigger.clearAllStates()`.
+* Marks `ConditionalState.dontSatisfyWithMinCalls`, `ConditionalState.dontSatisfyWithMinDays` and `ConditionalState.dontSatisfyWithMinCallsAndDays` as deprecated with `ConditionalState.notSatisfiedWithMinCalls`, `ConditionalState.notSatisfiedWithMinDays` and `ConditionalState.notSatisfiedWithMinCallsAndDays`.
+* Improves the `ConditionalState` descriptions.
+* Updates dependencies.
+
 ## 0.3.0
 
 * Bump dependencies.

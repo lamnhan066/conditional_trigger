@@ -1,3 +1,8 @@
+## 0.4.0
+
+* Removes all deprecated `ConditionalState` to avoid the `switch` issue.
+* Removes deprecated methods.
+
 ## 0.3.1
 
 * Marks `ConditionalTrigger.clearAllLastStates()` as deprecated with `ConditionalTrigger.clearAllStates()`.

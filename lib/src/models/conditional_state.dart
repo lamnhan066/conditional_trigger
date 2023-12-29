@@ -9,22 +9,10 @@ enum ConditionalState {
       'This version is satisfied with `noRequestVersions` => Not satisfied'),
 
   /// Not satisfied with minCalls condition.
-  @Deprecated('Use `ConditionalState.notSatisfiedWithMinCalls instead`')
-  dontSatisfyWithMinCalls('Not satisfied with minCalls condition'),
-
-  /// Not satisfied with minCalls condition.
   notSatisfiedWithMinCalls('Not satisfied with minCalls condition'),
 
   /// Not satisfied with minDays condition.
-  @Deprecated('Use `ConditionalState.notSatisfiedWithMinDays instead`')
-  dontSatisfyWithMinDays('Not satisfied with minDays condition'),
-
-  /// Not satisfied with minDays condition.
   notSatisfiedWithMinDays('Not satisfied with minDays condition'),
-
-  /// Not satisfied with minCalls and minDays.
-  @Deprecated('Use `ConditionalState.notSatisfiedWithMinCallsAndDays instead`')
-  dontSatisfyWithMinCallsAndDays("Not satisfied with minCalls and minDays"),
 
   /// Not satisfied with minCalls and minDays.
   notSatisfiedWithMinCallsAndDays("Not satisfied with minCalls and minDays"),

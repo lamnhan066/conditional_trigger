@@ -29,10 +29,6 @@ class ConditionalTrigger {
   /// Clear all states.
   static void clearAllStates() => _states.clear();
 
-  /// Clear all states.
-  @Deprecated('Use `clearAllStates` instead.')
-  static void clearAllLastStates() => clearAllStates();
-
   /// Clear all mocks.
   static void clearAllMocks() => ConditionalMock._clearAllMocks();
 

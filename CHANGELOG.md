@@ -1,3 +1,8 @@
+## 0.5.0
+
+* Change the sdk version to `^3.3.0`.
+* Bump the `package_info_plus` version to `^8.0.0`.
+
 ## 0.4.0
 
 * Removes all deprecated `ConditionalState` to avoid the `switch` issue.

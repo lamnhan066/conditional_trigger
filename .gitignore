@@ -29,4 +29,9 @@ migrate_working_dir/
 .packages
 build/
 
-coverage
+coverage/
+
+.flutter-plugins
+.flutter-plugins-dependencies
+
+example/pubspec.lock

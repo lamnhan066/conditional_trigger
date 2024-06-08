@@ -1,4 +1,4 @@
-## 0.5.2+1
+## 0.5.1+1
 
 * Add code coverage badge.
 

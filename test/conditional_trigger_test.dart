@@ -124,6 +124,36 @@ void main() {
       expect(state2, ConditionalState.satisfied);
     });
 
+    test('Test `check` call increment', () async {
+      ConditionalTrigger.clearAllStates();
+      ConditionalTrigger.clearAllMocks();
+      SharedPreferences.setMockInitialValues({});
+      await instance.check();
+      await instance.check();
+      final state = await instance.check();
+      expect(state, ConditionalState.notSatisfiedWithMinDays);
+    });
+
+    test('Test `check` day increment', () async {
+      ConditionalTrigger.clearAllStates();
+      ConditionalTrigger.clearAllMocks();
+      final first = DateTime.now().subtract(const Duration(days: 4));
+      SharedPreferences.setMockInitialValues({
+        instance.stateKey: ConditionalMock(
+          localVersion: '',
+          firstDateTime: first,
+          calls: 1,
+        ).toJson(),
+      });
+
+      // calls + 1 = 2
+      await instance.check();
+
+      // calls + 1 = 3
+      final state = await instance.check();
+      expect(state, ConditionalState.satisfied);
+    });
+
     /// `checkOnce` will keep the first value
     test('Test `checkOnce`', () async {
       ConditionalTrigger.clearAllStates();

@@ -1,3 +1,7 @@
+## 0.5.1
+
+* Fixes issue that the `call` is not incremented.
+
 ## 0.5.0
 
 * Change the sdk version to `^3.3.0`.

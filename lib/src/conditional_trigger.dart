@@ -159,9 +159,11 @@ class ConditionalTrigger {
             calls: prefs.getInt('$name.CallThisFunction') ?? 0,
           );
         } else {
+          final version = (await PackageInfo.fromPlatform()).version;
           // For newer version.
           state = ConditionalMock(
-            version: (await PackageInfo.fromPlatform()).version,
+            version: version,
+            localVersion: version,
             isRequested: false,
             nowDateTime: DateTime.now(),
             calls: 0,
@@ -198,7 +200,7 @@ class ConditionalTrigger {
     int days = state.nowDateTime.difference(state.firstDateTime).inDays;
 
     // Save data back to prefs.
-    if (mock != null) {
+    if (mock == null) {
       final prefs = await SharedPreferences.getInstance();
 
       if (state.calls >= minCalls && days >= minDays) {

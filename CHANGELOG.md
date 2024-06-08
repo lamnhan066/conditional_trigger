@@ -1,3 +1,7 @@
+## 0.5.2+1
+
+* Add code coverage badge.
+
 ## 0.5.1
 
 * Fixes issue that the `call` is not incremented.

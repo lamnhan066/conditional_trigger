@@ -1,5 +1,7 @@
 # Conditional Trigger
 
+[![codecov](https://codecov.io/gh/lamnhan066/conditional_trigger/graph/badge.svg?token=N18M437R3K)](https://codecov.io/gh/lamnhan066/conditional_trigger)
+
 This plugin will make it easier for you to set the conditions for specific method.
 
 ## Usage

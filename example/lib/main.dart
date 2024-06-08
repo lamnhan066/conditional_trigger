@@ -13,11 +13,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final bannerSurvey = const ConditionalTrigger('BannerSurvey');
-  final announce = const ConditionalTrigger('Announce');
+  final bannerSurvey = const ConditionalTrigger('BannerSurvey', debugLog: true);
+  final announce = const ConditionalTrigger('Announce', debugLog: true);
 
   @override
   void initState() {
+    initial();
     super.initState();
   }
 

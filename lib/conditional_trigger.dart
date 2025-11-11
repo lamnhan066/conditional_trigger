@@ -1,4 +1,4 @@
-library conditional_trigger;
+library;
 
 export 'src/conditional_trigger.dart';
 export 'src/models/conditional_state.dart';

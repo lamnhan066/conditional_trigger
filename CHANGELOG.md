@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Bump `package_info_plus` to `^9.0.0`.
+
 ## 0.5.1+1
 
 * Add code coverage badge.

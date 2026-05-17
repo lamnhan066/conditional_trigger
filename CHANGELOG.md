@@ -1,3 +1,8 @@
+## 0.7.0
+
+* Bump `package_info_plus` to `^10.1.0`.
+* Bump `shared_preferences` to `^2.5.5`.
+
 ## 0.6.0
 
 * Bump `package_info_plus` to `^9.0.0`.
